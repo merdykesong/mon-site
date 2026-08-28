@@ -2,171 +2,494 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mon Entreprise</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>KSG PESOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --primary: #2563eb;
-    --dark: #0f172a;
-    --light: #f8fafc;
+  :root{
+    --bg:#0B1120;
+    --bg-soft:#111A2E;
+    --card:#151F35;
+    --gold:#D4AF37;
+    --gold-soft:#F1D888;
+    --green:#12B76A;
+    --text:#E7EAF3;
+    --muted:#8B93A7;
+    --danger:#F04438;
+    --radius:16px;
+    --maxw:1180px;
   }
-  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
-  body { color: var(--dark); line-height: 1.6; }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,h4{font-family:'Poppins',sans-serif;}
+  a{text-decoration:none;color:inherit;}
+  ul{list-style:none;}
+  img{max-width:100%;display:block;}
 
-  header {
-    background: var(--dark);
-    color: white;
-    padding: 1rem 5%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: sticky;
-    top: 0;
-    z-index: 100;
+  /* ===== HEADER ===== */
+  header{
+    position:sticky;top:0;z-index:1000;
+    background:rgba(11,17,32,0.9);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(212,175,55,0.15);
+    padding:0.9rem 5%;
   }
-  header .logo { font-size: 1.4rem; font-weight: bold; }
-  header nav a {
-    color: white;
-    text-decoration: none;
-    margin-left: 2rem;
-    transition: color 0.2s;
+  .header-inner{
+    max-width:var(--maxw);margin:0 auto;
+    display:flex;flex-direction:column;align-items:center;gap:0.8rem;
   }
-  header nav a:hover { color: var(--primary); }
+  .logo{
+    font-size:1.7rem;font-weight:800;letter-spacing:2px;
+    text-align:center;
+    background:linear-gradient(90deg,var(--gold-soft),var(--gold));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .logo span{color:var(--green);-webkit-text-fill-color:var(--green);}
 
-  .hero {
-    background: linear-gradient(135deg, var(--dark), var(--primary));
-    color: white;
-    text-align: center;
-    padding: 6rem 5%;
+  nav{width:100%;display:flex;justify-content:center;}
+  .nav-list{
+    display:flex;gap:0.3rem;background:var(--card);
+    padding:0.4rem;border-radius:50px;flex-wrap:wrap;justify-content:center;
+    border:1px solid rgba(255,255,255,0.06);
   }
-  .hero h1 { font-size: 2.8rem; margin-bottom: 1rem; }
-  .hero p { font-size: 1.2rem; opacity: 0.9; margin-bottom: 2rem; }
-  .btn {
-    background: white;
-    color: var(--primary);
-    padding: 0.8rem 2rem;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-block;
-    transition: transform 0.2s;
+  .nav-list li a{
+    display:block;padding:0.55rem 1.3rem;border-radius:50px;
+    font-weight:600;font-size:0.92rem;color:var(--muted);
+    transition:all .25s ease;white-space:nowrap;
   }
-  .btn:hover { transform: translateY(-3px); }
+  .nav-list li a:hover{color:var(--text);}
+  .nav-list li a.active{
+    background:linear-gradient(90deg,var(--gold),var(--gold-soft));
+    color:#0B1120;
+  }
 
-  section { padding: 4rem 5%; max-width: 1100px; margin: 0 auto; }
-  section h2 { font-size: 2rem; margin-bottom: 2rem; text-align: center; color: var(--dark); }
+  .burger{display:none;position:absolute;right:5%;top:1rem;background:none;border:none;color:var(--gold);font-size:1.6rem;cursor:pointer;}
 
-  .services {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
+  /* ===== SECTIONS (each opens alone, full "page") ===== */
+  main{max-width:var(--maxw);margin:0 auto;padding:0 5%;}
+  .page{
+    display:none;
+    min-height:70vh;
+    padding:3rem 0 4rem;
+    animation:fadeIn .45s ease;
   }
-  .card {
-    background: var(--light);
-    padding: 2rem;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    transition: transform 0.2s;
-  }
-  .card:hover { transform: translateY(-5px); }
-  .card h3 { color: var(--primary); margin-bottom: 0.8rem; }
+  .page.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
 
-  .about { background: var(--light); }
+  .eyebrow{color:var(--gold);font-weight:700;font-size:0.8rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.6rem;}
+  .page h2{font-size:2.1rem;margin-bottom:1rem;}
+  .page > p.lead{color:var(--muted);max-width:640px;margin-bottom:2.4rem;font-size:1.05rem;}
 
-  footer {
-    background: var(--dark);
-    color: white;
-    text-align: center;
-    padding: 2rem 5%;
+  /* ---- HERO (accueil) ---- */
+  .hero{
+    text-align:center;padding:3.5rem 0 2rem;
   }
-  footer a { color: var(--primary); text-decoration: none; }
+  .hero h1{
+    font-size:clamp(2.2rem,6vw,3.4rem);
+    line-height:1.15;margin-bottom:1.1rem;
+  }
+  .hero h1 em{
+    font-style:normal;
+    background:linear-gradient(90deg,var(--gold),var(--green));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hero p{color:var(--muted);max-width:560px;margin:0 auto 2rem;font-size:1.05rem;}
+  .btn{
+    display:inline-flex;align-items:center;gap:0.5rem;
+    background:linear-gradient(90deg,var(--gold),var(--gold-soft));
+    color:#0B1120;font-weight:700;padding:0.9rem 2rem;border:none;
+    border-radius:50px;cursor:pointer;font-size:1rem;
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .btn:hover{transform:translateY(-3px);box-shadow:0 10px 25px rgba(212,175,55,0.25);}
+  .btn.ghost{background:transparent;border:1.5px solid var(--gold);color:var(--gold);}
 
-  form { max-width: 500px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem; }
-  form input, form textarea {
-    padding: 0.8rem;
-    border: 1px solid #cbd5e1;
-    border-radius: 6px;
-    font-size: 1rem;
+  .stats{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;
+    margin-top:3rem;
   }
-  form button {
-    background: var(--primary);
-    color: white;
-    padding: 0.9rem;
-    border: none;
-    border-radius: 6px;
-    font-size: 1rem;
-    cursor: pointer;
+  .stat{background:var(--card);border-radius:var(--radius);padding:1.5rem 1rem;text-align:center;border:1px solid rgba(255,255,255,0.05);}
+  .stat b{display:block;font-size:1.8rem;color:var(--gold);font-family:'Poppins',sans-serif;}
+  .stat span{color:var(--muted);font-size:0.85rem;}
+
+  /* ---- GRID CARDS (services) ---- */
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.4rem;}
+  .card{
+    background:var(--card);border-radius:var(--radius);padding:1.8rem;
+    border:1px solid rgba(255,255,255,0.05);
+    transition:transform .25s ease, border-color .25s ease;
   }
-  form button:hover { opacity: 0.9; }
+  .card:hover{transform:translateY(-6px);border-color:var(--gold);}
+  .card .ic{
+    width:48px;height:48px;border-radius:12px;
+    background:linear-gradient(135deg,var(--gold),var(--green));
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.4rem;margin-bottom:1rem;
+  }
+  .card h3{margin-bottom:0.5rem;font-size:1.15rem;}
+  .card p{color:var(--muted);font-size:0.93rem;}
+
+  /* ---- ABOUT ---- */
+  .about-wrap{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:center;}
+  .about-visual{
+    background:var(--card);border-radius:var(--radius);
+    height:280px;display:flex;align-items:center;justify-content:center;
+    font-size:4rem;border:1px solid rgba(255,255,255,0.05);
+  }
+  .values{display:flex;flex-wrap:wrap;gap:0.6rem;margin-top:1.4rem;}
+  .pill{background:var(--bg-soft);border:1px solid rgba(212,175,55,0.3);color:var(--gold-soft);padding:0.4rem 1rem;border-radius:50px;font-size:0.85rem;}
+
+  /* ---- CONTACT ---- */
+  .contact-wrap{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;}
+  form{display:flex;flex-direction:column;gap:1rem;}
+  .field{display:flex;flex-direction:column;gap:0.4rem;}
+  .field label{font-size:0.85rem;color:var(--muted);}
+  input,textarea{
+    background:var(--card);border:1px solid rgba(255,255,255,0.08);
+    color:var(--text);padding:0.85rem 1rem;border-radius:10px;
+    font-size:0.95rem;font-family:inherit;transition:border-color .2s;
+  }
+  input:focus,textarea:focus{outline:none;border-color:var(--gold);}
+  .info-list{display:flex;flex-direction:column;gap:1.2rem;}
+  .info-item{display:flex;gap:1rem;align-items:flex-start;background:var(--card);padding:1.2rem;border-radius:var(--radius);border:1px solid rgba(255,255,255,0.05);}
+  .info-item .ic{font-size:1.3rem;}
+  .toast{
+    position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(120%);
+    background:var(--green);color:#fff;padding:0.9rem 1.6rem;border-radius:50px;
+    font-weight:600;box-shadow:0 10px 30px rgba(0,0,0,0.3);transition:transform .35s ease;z-index:2000;
+  }
+  .toast.show{transform:translateX(-50%) translateY(0);}
+
+  /* ---- QUIZ / JEUX GAGNANTS ---- */
+  .quiz-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:0.8rem;}
+  .badge{background:var(--bg-soft);border:1px solid rgba(212,175,55,0.3);padding:0.5rem 1rem;border-radius:50px;font-size:0.85rem;color:var(--gold-soft);font-weight:600;}
+  .progress-bar{height:8px;background:var(--card);border-radius:50px;overflow:hidden;margin-bottom:2rem;}
+  .progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--green));transition:width .3s ease;}
+
+  .quiz-card{background:var(--card);border-radius:var(--radius);padding:2rem;border:1px solid rgba(255,255,255,0.05);}
+  .quiz-cat{display:inline-block;background:var(--bg-soft);color:var(--green);font-size:0.75rem;font-weight:700;padding:0.3rem 0.8rem;border-radius:50px;margin-bottom:1rem;text-transform:uppercase;letter-spacing:1px;}
+  .quiz-question{font-size:1.3rem;margin-bottom:1.6rem;font-weight:600;}
+  .options{display:grid;gap:0.8rem;}
+  .option{
+    text-align:left;background:var(--bg-soft);border:1.5px solid rgba(255,255,255,0.08);
+    color:var(--text);padding:0.9rem 1.2rem;border-radius:12px;cursor:pointer;
+    font-size:0.98rem;font-family:inherit;transition:all .2s ease;
+  }
+  .option:hover:not(:disabled){border-color:var(--gold);}
+  .option.correct{background:rgba(18,183,106,0.18);border-color:var(--green);color:#7EE2B8;}
+  .option.wrong{background:rgba(240,68,56,0.15);border-color:var(--danger);color:#F8A6A0;}
+  .option:disabled{cursor:default;}
+
+  .quiz-actions{display:flex;justify-content:flex-end;margin-top:1.6rem;}
+  .quiz-result{text-align:center;padding:3rem 1rem;}
+  .quiz-result .score{font-size:3.4rem;font-family:'Poppins',sans-serif;color:var(--gold);margin:1rem 0;}
+  .hidden{display:none !important;}
+
+  /* ---- FOOTER ---- */
+  footer{border-top:1px solid rgba(255,255,255,0.06);padding:2rem 5%;text-align:center;color:var(--muted);font-size:0.85rem;}
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width:820px){
+    .about-wrap,.contact-wrap{grid-template-columns:1fr;}
+  }
+  @media (max-width:640px){
+    .burger{display:block;}
+    .nav-list{
+      position:fixed;top:0;right:-100%;height:100vh;width:75%;max-width:300px;
+      flex-direction:column;background:var(--bg-soft);border-radius:0;
+      padding:5rem 1.5rem 1.5rem;justify-content:flex-start;
+      transition:right .3s ease;border-left:1px solid rgba(212,175,55,0.2);
+    }
+    .nav-list.open{right:0;}
+    .nav-list li{width:100%;}
+    .nav-list li a{width:100%;text-align:center;}
+    .stats{grid-template-columns:1fr;}
+    .quiz-question{font-size:1.1rem;}
+    .header-inner{align-items:center;}
+  }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo">MonEntreprise</div>
-  <nav>
-    <a href="#accueil">Accueil</a>
-    <a href="#services">Services</a>
-    <a href="#apropos">À propos</a>
-    <a href="#contact">Contact</a>
-  </nav>
+  <div class="header-inner">
+    <div class="logo">KSG <span>PESOS</span></div>
+    <button class="burger" id="burgerBtn">☰</button>
+    <nav>
+      <ul class="nav-list" id="navList">
+        <li><a href="#" data-page="accueil" class="active">Accueil</a></li>
+        <li><a href="#" data-page="services">Services</a></li>
+        <li><a href="#" data-page="apropos">À propos</a></li>
+        <li><a href="#" data-page="contact">Contact</a></li>
+        <li><a href="#" data-page="jeux">🎮 Jeux Gagnants</a></li>
+      </ul>
+    </nav>
+  </div>
 </header>
 
-<section class="hero" id="accueil">
-  <h1>Bienvenue chez MonEntreprise</h1>
-  <p>Nous transformons vos idées en solutions concrètes.</p>
-  <a href="#contact" class="btn">Nous contacter</a>
-</section>
+<main>
 
-<section id="services">
-  <h2>Nos services</h2>
-  <div class="services">
-    <div class="card">
-      <h3>Service 1</h3>
-      <p>Description courte du premier service proposé à vos clients.</p>
+  <!-- ACCUEIL -->
+  <section class="page active" id="accueil">
+    <div class="hero">
+      <div class="eyebrow" style="text-align:center;">Bienvenue sur</div>
+      <h1>KSG <em>PESOS</em></h1>
+      <p>La plateforme qui récompense votre culture générale. Jouez, apprenez, gagnez — sport, géographie et musique réunis dans un seul défi.</p>
+      <div>
+        <button class="btn" onclick="goTo('jeux')">🎮 Jouer maintenant</button>
+        <a href="#" class="btn ghost" onclick="goTo('services');return false;">Découvrir</a>
+      </div>
+      <div class="stats">
+        <div class="stat"><b>30+</b><span>Questions disponibles</span></div>
+        <div class="stat"><b>3</b><span>Catégories</span></div>
+        <div class="stat"><b>100%</b><span>Gratuit & interactif</span></div>
+      </div>
     </div>
-    <div class="card">
-      <h3>Service 2</h3>
-      <p>Description courte du deuxième service proposé à vos clients.</p>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="page" id="services">
+    <div class="eyebrow">Ce que nous offrons</div>
+    <h2>Nos services</h2>
+    <p class="lead">Des expériences pensées pour tester et récompenser vos connaissances.</p>
+    <div class="grid">
+      <div class="card"><div class="ic">🏆</div><h3>Quiz Gagnants</h3><p>Répondez à des questions sport, géo et musique, suivez votre score en temps réel.</p></div>
+      <div class="card"><div class="ic">📊</div><h3>Suivi de score</h3><p>Une barre de progression et un résultat final détaillé après chaque partie.</p></div>
+      <div class="card"><div class="ic">⚡</div><h3>Réponse instantanée</h3><p>Feedback immédiat : bonne ou mauvaise réponse affichée en direct.</p></div>
+      <div class="card"><div class="ic">📱</div><h3>100% Responsive</h3><p>Compatible mobile, tablette et ordinateur, sans aucune installation.</p></div>
+      <div class="card"><div class="ic">🌍</div><h3>Culture générale</h3><p>Des questions variées pour tous les niveaux, mises à jour régulièrement.</p></div>
+      <div class="card"><div class="ic">🔒</div><h3>Sans inscription</h3><p>Accédez directement au jeu, aucune donnée requise pour commencer.</p></div>
     </div>
-    <div class="card">
-      <h3>Service 3</h3>
-      <p>Description courte du troisième service proposé à vos clients.</p>
+  </section>
+
+  <!-- A PROPOS -->
+  <section class="page" id="apropos">
+    <div class="eyebrow">Qui sommes-nous</div>
+    <h2>À propos de KSG PESOS</h2>
+    <div class="about-wrap">
+      <div>
+        <p style="color:var(--muted);margin-bottom:1rem;">KSG PESOS est né d'une idée simple : rendre l'apprentissage aussi excitant qu'un jeu. Notre mission est de proposer une expérience fluide, moderne et accessible à tous, sur n'importe quel appareil.</p>
+        <p style="color:var(--muted);">Chaque question est pensée pour informer autant que divertir, avec un design pensé pour la clarté et l'interaction.</p>
+        <div class="values">
+          <span class="pill">Innovation</span>
+          <span class="pill">Simplicité</span>
+          <span class="pill">Accessibilité</span>
+          <span class="pill">Fun</span>
+        </div>
+      </div>
+      <div class="about-visual">🏅</div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section class="about" id="apropos">
-  <h2>À propos de nous</h2>
-  <p style="text-align:center; max-width:700px; margin:0 auto;">
-    Présentez ici l'histoire de votre entreprise, votre mission et vos valeurs. 
-    Ce paragraphe doit donner confiance au visiteur et expliquer pourquoi il devrait vous choisir.
-  </p>
-</section>
+  <!-- CONTACT -->
+  <section class="page" id="contact">
+    <div class="eyebrow">Restons en contact</div>
+    <h2>Contactez-nous</h2>
+    <div class="contact-wrap">
+      <form id="contactForm">
+        <div class="field"><label>Nom complet</label><input type="text" required placeholder="Votre nom"></div>
+        <div class="field"><label>Email</label><input type="email" required placeholder="vous@exemple.com"></div>
+        <div class="field"><label>Message</label><textarea rows="5" required placeholder="Votre message..."></textarea></div>
+        <button type="submit" class="btn">Envoyer le message</button>
+      </form>
+      <div class="info-list">
+        <div class="info-item"><span class="ic">📍</span><div><b>Adresse</b><p style="color:var(--muted);">Rue Principale, Votre Ville</p></div></div>
+        <div class="info-item"><span class="ic">📞</span><div><b>Téléphone</b><p style="color:var(--muted);">+xxx xx xxx xxxx</p></div></div>
+        <div class="info-item"><span class="ic">✉️</span><div><b>Email</b><p style="color:var(--muted);">contact@ksgpesos.com</p></div></div>
+      </div>
+    </div>
+  </section>
 
-<section id="contact">
-  <h2>Contactez-nous</h2>
-  <form onsubmit="handleSubmit(event)">
-    <input type="text" placeholder="Votre nom" required>
-    <input type="email" placeholder="Votre email" required>
-    <textarea placeholder="Votre message" rows="5" required></textarea>
-    <button type="submit">Envoyer</button>
-  </form>
-</section>
+  <!-- JEUX GAGNANTS (QUIZ) -->
+  <section class="page" id="jeux">
+    <div class="eyebrow">Testez-vous</div>
+    <h2>🎮 Jeux Gagnants</h2>
+    <p class="lead">30 questions de sport, géographie et musique. Répondez et suivez votre score !</p>
 
-<footer>
-  <p>&copy; 2026 MonEntreprise. Tous droits réservés.</p>
-</footer>
+    <div id="quizArea">
+      <div class="quiz-topbar">
+        <span class="badge" id="qCounter">Question 1 / 30</span>
+        <span class="badge" id="qScore">Score : 0</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+      <div class="quiz-card">
+        <span class="quiz-cat" id="qCategory">Sport</span>
+        <div class="quiz-question" id="qText">Chargement...</div>
+        <div class="options" id="qOptions"></div>
+        <div class="quiz-actions">
+          <button class="btn" id="nextBtn" disabled>Suivant →</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="quiz-result hidden" id="quizResult">
+      <div class="eyebrow" style="text-align:center;">Partie terminée</div>
+      <h2>Votre résultat</h2>
+      <div class="score" id="finalScore">0 / 30</div>
+      <p style="color:var(--muted);margin-bottom:1.5rem;" id="finalMsg"></p>
+      <button class="btn" onclick="restartQuiz()">🔄 Rejouer</button>
+    </div>
+  </section>
+
+</main>
+
+<footer>&copy; 2026 KSG PESOS. Tous droits réservés.</footer>
+<div class="toast" id="toast">Message envoyé avec succès !</div>
 
 <script>
-function handleSubmit(e) {
-  e.preventDefault();
-  alert("Message envoyé ! (à connecter à un vrai backend/email plus tard)");
-  e.target.reset();
+/* ===== NAVIGATION ===== */
+const links = document.querySelectorAll('.nav-list a');
+const pages = document.querySelectorAll('.page');
+const navList = document.getElementById('navList');
+const burgerBtn = document.getElementById('burgerBtn');
+
+function goTo(pageId){
+  pages.forEach(p => p.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+  links.forEach(l => l.classList.toggle('active', l.dataset.page === pageId));
+  navList.classList.remove('open');
+  window.scrollTo({top:0, behavior:'smooth'});
 }
+links.forEach(link=>{
+  link.addEventListener('click', e=>{
+    e.preventDefault();
+    goTo(link.dataset.page);
+  });
+});
+burgerBtn.addEventListener('click', ()=> navList.classList.toggle('open'));
+
+/* ===== CONTACT FORM ===== */
+document.getElementById('contactForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const toast = document.getElementById('toast');
+  toast.classList.add('show');
+  setTimeout(()=> toast.classList.remove('show'), 2800);
+  this.reset();
+});
+
+/* ===== QUIZ DATA (30 questions) ===== */
+const questions = [
+  // SPORT
+  {cat:"Sport", q:"Combien de joueurs compte une équipe de football sur le terrain ?", opts:["9","10","11","12"], a:2},
+  {cat:"Sport", q:"Dans quel pays se sont déroulés les JO d'été 2024 ?", opts:["Japon","France","Brésil","Chine"], a:1},
+  {cat:"Sport", q:"Combien de sets faut-il gagner pour remporter un match de tennis en Grand Chelem (homme) ?", opts:["2","3","4","5"], a:1},
+  {cat:"Sport", q:"Quel pays a remporté la Coupe du Monde de football 2022 ?", opts:["France","Brésil","Argentine","Allemagne"], a:2},
+  {cat:"Sport", q:"Dans quel sport utilise-t-on un « birdie » ?", opts:["Tennis","Golf","Badminton","Squash"], a:2},
+  {cat:"Sport", q:"Combien de points vaut un panier à 3 points au basketball ?", opts:["1","2","3","4"], a:2},
+  {cat:"Sport", q:"Quel athlète est surnommé « la Foudre » (Lightning Bolt) ?", opts:["Usain Bolt","Carl Lewis","Mo Farah","Justin Gatlin"], a:0},
+  {cat:"Sport", q:"Combien de temps dure un match de football (temps réglementaire) ?", opts:["60 min","70 min","90 min","120 min"], a:2},
+  {cat:"Sport", q:"Dans quel sport pratique-t-on le « smash » ?", opts:["Volley-ball","Badminton","Escrime","Boxe"], a:1},
+  {cat:"Sport", q:"Quelle équipe a le plus de titres en Ligue des Champions ?", opts:["FC Barcelone","Real Madrid","AC Milan","Bayern Munich"], a:1},
+  // GEOGRAPHIE
+  {cat:"Géographie", q:"Quelle est la capitale du Sénégal ?", opts:["Dakar","Abidjan","Bamako","Conakry"], a:0},
+  {cat:"Géographie", q:"Quel est le plus grand désert du monde ?", opts:["Sahara","Gobi","Kalahari","Antarctique"], a:3},
+  {cat:"Géographie", q:"Quel fleuve traverse l'Égypte ?", opts:["Congo","Nil","Niger","Zambèze"], a:1},
+  {cat:"Géographie", q:"Combien de continents existe-t-il ?", opts:["5","6","7","8"], a:2},
+  {cat:"Géographie", q:"Quelle est la capitale du Japon ?", opts:["Osaka","Kyoto","Tokyo","Séoul"], a:2},
+  {cat:"Géographie", q:"Quel est le plus grand pays du monde par superficie ?", opts:["Canada","Chine","Russie","USA"], a:2},
+  {cat:"Géographie", q:"Quelle montagne est la plus haute du monde ?", opts:["Kilimandjaro","Mont Blanc","Everest","K2"], a:2},
+  {cat:"Géographie", q:"Dans quel pays se trouve la Tour Eiffel ?", opts:["Italie","France","Espagne","Belgique"], a:1},
+  {cat:"Géographie", q:"Quel océan est le plus grand ?", opts:["Atlantique","Indien","Pacifique","Arctique"], a:2},
+  {cat:"Géographie", q:"Quelle est la capitale de l'Italie ?", opts:["Milan","Rome","Venise","Naples"], a:1},
+  // MUSIQUE
+  {cat:"Musique", q:"Quel artiste a chanté « Thriller » ?", opts:["Prince","Michael Jackson","Stevie Wonder","James Brown"], a:1},
+  {cat:"Musique", q:"Combien de cordes possède une guitare classique ?", opts:["4","5","6","7"], a:2},
+  {cat:"Musique", q:"Quel groupe a chanté « Bohemian Rhapsody » ?", opts:["The Beatles","Queen","Pink Floyd","Led Zeppelin"], a:1},
+  {cat:"Musique", q:"Quel instrument compte 88 touches ?", opts:["Orgue","Piano","Accordéon","Xylophone"], a:1},
+  {cat:"Musique", q:"Qui est surnommé « le Roi de la Pop » ?", opts:["Elvis Presley","Michael Jackson","Prince","Usher"], a:1},
+  {cat:"Musique", q:"D'où est originaire le reggae ?", opts:["Jamaïque","Cuba","Brésil","Nigéria"], a:0},
+  {cat:"Musique", q:"Quel artiste ivoirien est connu comme le « roi du Coupé-décalé » ?", opts:["DJ Arafat","Serge Beynaud","Debordo Leekunfa","Molare"], a:0},
+  {cat:"Musique", q:"Quelle chanteuse a interprété « Halo » ?", opts:["Rihanna","Beyoncé","Alicia Keys","Adele"], a:1},
+  {cat:"Musique", q:"Combien de notes de musique existe-t-il dans la gamme de base ?", opts:["5","6","7","8"], a:2},
+  {cat:"Musique", q:"Quel style musical est né à la Jamaïque dans les années 1960 ?", opts:["Blues","Reggae","Jazz","Funk"], a:1}
+];
+
+let current = 0;
+let score = 0;
+
+const qText = document.getElementById('qText');
+const qOptions = document.getElementById('qOptions');
+const qCategory = document.getElementById('qCategory');
+const qCounter = document.getElementById('qCounter');
+const qScore = document.getElementById('qScore');
+const nextBtn = document.getElementById('nextBtn');
+const progressFill = document.getElementById('progressFill');
+const quizArea = document.getElementById('quizArea');
+const quizResult = document.getElementById('quizResult');
+
+function loadQuestion(){
+  const item = questions[current];
+  qCategory.textContent = item.cat;
+  qText.textContent = item.q;
+  qCounter.textContent = `Question ${current+1} / ${questions.length}`;
+  qScore.textContent = `Score : ${score}`;
+  progressFill.style.width = `${(current/questions.length)*100}%`;
+  nextBtn.disabled = true;
+
+  qOptions.innerHTML = '';
+  item.opts.forEach((opt, i)=>{
+    const btn = document.createElement('button');
+    btn.className = 'option';
+    btn.textContent = opt;
+    btn.addEventListener('click', ()=> selectAnswer(i, btn));
+    qOptions.appendChild(btn);
+  });
+}
+
+function selectAnswer(i, btn){
+  const item = questions[current];
+  const allBtns = qOptions.querySelectorAll('.option');
+  allBtns.forEach(b => b.disabled = true);
+
+  if(i === item.a){
+    btn.classList.add('correct');
+    score++;
+  } else {
+    btn.classList.add('wrong');
+    allBtns[item.a].classList.add('correct');
+  }
+  qScore.textContent = `Score : ${score}`;
+  nextBtn.disabled = false;
+}
+
+nextBtn.addEventListener('click', ()=>{
+  current++;
+  if(current < questions.length){
+    loadQuestion();
+  } else {
+    showResult();
+  }
+});
+
+function showResult(){
+  quizArea.classList.add('hidden');
+  quizResult.classList.remove('hidden');
+  document.getElementById('finalScore').textContent = `${score} / ${questions.length}`;
+  const pct = (score/questions.length)*100;
+  let msg = "Continuez à jouer pour améliorer votre score !";
+  if(pct >= 80) msg = "Excellent ! Vous êtes un champion KSG PESOS 🏆";
+  else if(pct >= 50) msg = "Bien joué ! Encore un effort pour le top score.";
+  document.getElementById('finalMsg').textContent = msg;
+}
+
+function restartQuiz(){
+  current = 0;
+  score = 0;
+  quizResult.classList.add('hidden');
+  quizArea.classList.remove('hidden');
+  loadQuestion();
+}
+
+loadQuestion();
 </script>
 
 </body>
